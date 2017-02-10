@@ -30,7 +30,7 @@ function setupCanvasL(){
 
   c.strokeStyle = "#ffffff";
   c.lineWidth = 2;
-}//setupCanvas by writing all the html on page load
+}//setupCanvas by writing all the html on page load     //Canvas setup for joystick
 
 function setupCanvasR(){
   canvasR = document.createElement( 'canvas' );
@@ -45,16 +45,16 @@ function setupCanvasR(){
 
   r.strokeStyle = "#ffffff";
   r.lineWidth = 2;
-}//setupCanvas by writing all the html on page load
+}//setupCanvas by writing all the html on page load     //Canvas for buttons
 
-if(touchable) {
+if(touchable) {     //checks if the screen is a touch screem
   canvasL.addEventListener( 'touchstart', onTouchStart, false );
   canvasL.addEventListener( 'touchmove', onTouchMove, false );
   canvasL.addEventListener( 'touchend', onTouchEnd, false );
   window.onorientationchange = resetCanvas;
   window.onresize = resetCanvas;
 
-} else {
+} else {        //if it's a mouse. Used for debug
   canvasL.addEventListener( 'mousemove', onMouseMove, false );
   canvasL.addEventListener( 'mousedown', onMouseDown, false );
   canvasL.addEventListener( 'mouseup', onMouseUp, false );
@@ -80,6 +80,16 @@ function drawR(){
 function drawL(){
   c.clearRect(0, 0, canvasL.width, canvasL.height*2);
   if(touching && touch.clientX<halfX){
+        drawJoystick();
+  } else{
+
+    if(mouseDown && baseX<halfX){
+          drawJoystick();
+    }//if
+  }//if else
+}//draw
+
+function drawJoystick(){
     var digDirection = getDigDirection();
     var digx = digDirection.xdig;
     var digy = digDirection.ydig;
@@ -111,42 +121,7 @@ function drawL(){
 
     c.font = '30px';
     c.fillText('anly: '+anly, 10, 80);
-  } else{
-    if(mouseDown && baseX<halfX){
-      var anlDirection = getDirection();
-      var anlx = anlDirection.xdir;
-      var anly = anlDirection.ydir;
-
-      var digDirection = getDigDirection();
-      var digx = digDirection.xdig;
-      var digy = digDirection.ydig;
-
-      c.beginPath();
-      c.strokeStyle = "rgba(255, 0, 0, 0.5)";
-      c.lineWidth = "10";
-      c.arc(baseX, baseY, 50, 0, Math.PI*2, true);
-      c.stroke();
-
-      c.beginPath();
-      c.strokeStyle = "rgba(0, 255, 0, 0.5)";
-      c.lineWidth = "10";
-      c.arc(circX, circY, 50, 0, Math.PI*2, true);
-      c.stroke();
-
-      c.font = '30px';
-      c.fillText('digx: '+digx, 10, 20);
-
-      c.font = '30px';
-      c.fillText('digy: '+digy, 10, 40);
-
-      c.font = '30px';
-      c.fillText('anlx: '+anlx, 10, 60);
-
-      c.font = '30px';
-      c.fillText('anly: '+anly, 10, 80);
-    }//if
-  }//if else
-}//draw
+}//drawJoystick
 
 function onTouchStart(e) {
   touch = e.touches[0];
