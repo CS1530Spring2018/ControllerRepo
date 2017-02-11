@@ -48,12 +48,14 @@ function setupCanvasR(){
 }//setupCanvas by writing all the html on page load     //Canvas for buttons
 
 if(touchable) {     //checks if the screen is a touch screem
-  canvasL.addEventListener( 'touchstart', onTouchStart, false );
-  canvasL.addEventListener( 'touchmove', onTouchMove, false );
-  canvasL.addEventListener( 'touchend', onTouchEnd, false );
-  window.onorientationchange = resetCanvas;
-  window.onresize = resetCanvas;
+    // Joystick canvas
+    canvasL.addEventListener( 'touchstart', onTouchStartLeft, false );
+    canvasL.addEventListener( 'touchmove', onTouchMoveLeft, false );
+    canvasL.addEventListener( 'touchend', onTouchEndLeft, false );
 
+
+    window.onorientationchange = resetCanvas;
+    window.onresize = resetCanvas;
 } else {        //if it's a mouse. Used for debug
   canvasL.addEventListener( 'mousemove', onMouseMove, false );
   canvasL.addEventListener( 'mousedown', onMouseDown, false );
@@ -75,7 +77,7 @@ function init(){
 
 function drawR(){
   r.clearRect(0, 0, canvasR.width, canvasR.height*2);
-}
+}       //This will be the button side
 
 function drawL(){
   c.clearRect(0, 0, canvasL.width, canvasL.height*2);
@@ -124,7 +126,7 @@ function drawJoystick(){
     c.fillText('anly: '+anly, 10, 80);
 }//drawJoystick
 
-function onTouchStart(e) {
+function onTouchStartLeft(e) {
   joystickTouch = e.touches[0];
   baseX = touch.clientX;
   baseY = touch.clientY;
@@ -133,7 +135,7 @@ function onTouchStart(e) {
   touching = true;
 }//onTouchStart
 
-function onTouchMove(e) {
+function onTouchMoveLeft(e) {
   e.preventDefault();
   touch = e.touches[0];
   touchX = touch.clientX;
@@ -160,7 +162,7 @@ function onTouchMove(e) {
   }
 }//onTouchMove
 
-function onTouchEnd(e) {
+function onTouchEndLeft(e) {
   touching = false;
 }//onTouchEnd
 
