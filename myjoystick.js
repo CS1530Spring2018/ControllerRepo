@@ -30,7 +30,7 @@ var doubleTap = false;
 var swipe = false;
 
 class myjoystick{
-  constructor(tapFunction, doubleTapFunction, swipeFunction){
+  constructor(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction){
       setupCanvasL();
       setupCanvasR();
       rightHammer = new Hammer(canvasR);
@@ -47,7 +47,10 @@ class myjoystick{
           rightHammer.on('doubletap', doubleTapFunction);
 
           rightHammer.get('swipe').set({direction: Hammer.DIRECTION_ALL});
-          rightHammer.on('swipe', swipeFunction);
+          rightHammer.on('swiperight', swipeRFunction);
+          rightHammer.on('swipeleft', swipeLFunction);
+          rightHammer.on('swipeup', swipeUFunction);
+          rightHammer.on('swipedown', swipeDFunction);
 
           window.onorientationchange = resetCanvas;
           window.onresize = resetCanvas;
