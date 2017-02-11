@@ -1,5 +1,6 @@
 
-var cont = new myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction);
+var cont = new myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction,
+        touchStart, touchStart, touchStart);
 //init pubnub
 var pubnub = PUBNUB.init({
    subscribe_key: 'sub-c-9609aa90-f010-11e6-9032-0619f8945a4f',
@@ -60,8 +61,12 @@ function swipeUFunction(){
   });
 }//swipeUFunction
 
-setInterval(logDir, 1000/35);
+function touchStart(){
 
-function logDir(){
-    console.log(cont.getAnDirection().ydir);
-}
+    var sendAnal = cont.getAnDirection();
+
+    pubnub.publish({
+        channel: "con",
+        message: {"log": sendAnal},
+    });
+}//touchStart

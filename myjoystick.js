@@ -29,7 +29,8 @@ var tap = false;
 var doubleTap = false;
 var swipe = false;
 
-function myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction){
+function myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction,
+                    startTouch, moveTouch, endTouch){
       setupCanvasL();
       setupCanvasR();
       rightHammer = new Hammer(canvasR);
@@ -38,9 +39,46 @@ function myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFuncti
       setInterval(drawR, 1000/35);
       if(touchable) {     //checks if the screen is a touch screem
           // Joystick canvas
-          canvasL.addEventListener( 'touchstart', onTouchStartLeft, false );
-          canvasL.addEventListener( 'touchmove', onTouchMoveLeft, false );
-          canvasL.addEventListener( 'touchend', onTouchEndLeft, false );
+          canvasL.addEventListener( 'touchstart', function(e){
+              joystickTouch = e.targetTouches[0];
+              baseX = joystickTouch.clientX;
+              baseY = joystickTouch.clientY;
+              circX = baseX;
+              circY = baseY;
+              leftTouching = true;
+              startTouch();
+          }, false );
+          canvasL.addEventListener( 'touchmove', function(e){
+              e.preventDefault();
+              touch = e.touches[0];
+              touchX = touch.clientX;
+              touchY = touch.clientY;
+              var dist = Math.sqrt(Math.pow(baseY-touchY, 2) + Math.pow(baseX-touchX, 2));
+              if (leftTouching) {
+                if (dist < rad || dist < -rad) { // in the circle
+                  circY=touchY;
+                  circX=touchX;
+                } else { // outside the circle
+                  // SOHCAHTOA TIME BITCHES
+                  var angle = Math.atan((touchY-baseY)/(touchX-baseX));
+                  var opposite = rad * Math.sin(angle);
+                  var adjacent = rad * Math.cos(angle);
+
+                  if (touchX > baseX) {
+                    circX=baseX+adjacent;
+                    circY=baseY+opposite;
+                  } else {
+                    circX=baseX-adjacent;
+                    circY=baseY-opposite;
+                  }
+                }
+              }
+              moveTouch();
+          }, false );
+          canvasL.addEventListener( 'touchend', function(e){
+              leftTouching = false;
+              endTouch();
+          }, false );
 
           rightHammer.on('tap', tapFunction);
           rightHammer.on('doubletap', doubleTapFunction);
