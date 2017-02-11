@@ -29,8 +29,7 @@ var tap = false;
 var doubleTap = false;
 var swipe = false;
 
-class myjoystick{
-  constructor(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction){
+function myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction){
       setupCanvasL();
       setupCanvasR();
       rightHammer = new Hammer(canvasR);
@@ -60,8 +59,10 @@ class myjoystick{
         canvasL.addEventListener( 'mouseup', onMouseUp, false );
         window.onresize = resetCanvas;
       }// if...else
-    }
-}
+
+      this.getAnDirection = getAnDirection;
+      this.getDigDirection = getDigDirection;
+}//myjoystick
 
 function setupCanvasL(){
   canvasL = document.createElement( 'canvas' );
@@ -269,11 +270,11 @@ function getAnDirection(){
       var xdir = (Math.abs(x)/rad)*cos;
       var ydir = (Math.abs(y)/rad)*sin;
 
-      if(isNaN(xdir)){
+      if(isNaN(xdir)||!(leftTouching||mouseDown)){
           xdir = 0;
       }//if checking if NaN
 
-      if(isNaN(ydir)){
+      if(isNaN(ydir)||!(leftTouching||mouseDown)){
           ydir = 0;
       }//if checking if NaN
 
@@ -296,17 +297,17 @@ function getDigDirection(){
   var xdig = 0;
   var ydig = 0;
 
-  if((xdir<0.5 && xdir>(-0.5)) || isNaN(xdir)){
+  if((xdir<0.5 && xdir>(-0.5)) || isNaN(xdir)||!(leftTouching||mouseDown)){
     xdig = 0;
-  } else if(xdir<=0.5){
+} else if(xdir<=0.5&&(leftTouching||mouseDown)){
     xdig = -1;
   } else {
     xdig = 1;
   }//xdig if else
 
-  if(ydir>=0.2){
+  if(ydir>=0.2&&(leftTouching||mouseDown)){
     ydig = 1;
-  } else if(ydir<=(-0.2)){
+} else if(ydir<=(-0.2)&&(leftTouching||mouseDown)){
     ydig = -1;
   } else {
     ydig = 0;

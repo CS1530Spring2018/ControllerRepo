@@ -18,7 +18,7 @@ function tapFunction(){
            message: { "log" : "tapFunction"
            }
     });
-}//
+}//tapFunction
 
 function doubleTapFunction(){
   pubnub.publish({
@@ -26,7 +26,7 @@ function doubleTapFunction(){
          message: { "log" : "doubleTapFunction"
          }
   });
-}//
+}//doubleTapFunction
 
 function swipeRFunction(){
   pubnub.publish({
@@ -34,7 +34,7 @@ function swipeRFunction(){
          message: { "log" : "swipeRFunction"
          }
   });
-}//
+}//swipeRFunction
 
 function swipeLFunction(){
   pubnub.publish({
@@ -42,7 +42,7 @@ function swipeLFunction(){
          message: { "log" : "swipeLFunction"
          }
   });
-}//
+}//swipeLFunction
 
 function swipeDFunction(){
   pubnub.publish({
@@ -50,7 +50,7 @@ function swipeDFunction(){
          message: { "log" : "swipeDFunction"
          }
   });
-}//
+}//swipeDFunction
 
 function swipeUFunction(){
   pubnub.publish({
@@ -58,4 +58,10 @@ function swipeUFunction(){
          message: { "log" : "swipeUFunction"
          }
   });
-}//
+}//swipeUFunction
+
+setInterval(logDir, 1000/35);
+
+function logDir(){
+    console.log(cont.getAnDirection().ydir);
+}
