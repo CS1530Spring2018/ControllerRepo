@@ -1,26 +1,61 @@
 
 var cont = new myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction);
+//init pubnub
+var pubnub = PUBNUB.init({
+   subscribe_key: 'sub-c-9609aa90-f010-11e6-9032-0619f8945a4f',
+  publish_key: 'pub-c-62822c7d-339b-4abc-9e87-fb6671883787'
+ });
+ //subscribe to pubnub
+ pubnub.subscribe({
+     channel: "con", // The proper channel.
+     message: function(){} // we don't really care about any of the messages.
+ });
 
 function tapFunction(){
-    alert("Doing something for a tap");
+    //alert("Doing something for a tap");
+    pubnub.publish({
+           channel: "con", // The proper channel.
+           message: { "log" : "tapFunction"
+           }
+    });
 }//
 
 function doubleTapFunction(){
-    alert("Doing something for a double tap");
+  pubnub.publish({
+         channel: "con", // The proper channel.
+         message: { "log" : "doubleTapFunction"
+         }
+  });
 }//
 
 function swipeRFunction(){
-        alert("swiped right");
+  pubnub.publish({
+         channel: "con", // The proper channel.
+         message: { "log" : "swipeRFunction"
+         }
+  });
 }//
 
 function swipeLFunction(){
-        alert("swiped left");
+  pubnub.publish({
+         channel: "con", // The proper channel.
+         message: { "log" : "swipeLFunction"
+         }
+  });
 }//
 
 function swipeDFunction(){
-        alert("swiped down");
+  pubnub.publish({
+         channel: "con", // The proper channel.
+         message: { "log" : "swipeDFunction"
+         }
+  });
 }//
 
 function swipeUFunction(){
-        alert("swiped up");
+  pubnub.publish({
+         channel: "con", // The proper channel.
+         message: { "log" : "swipeUFunction"
+         }
+  });
 }//
