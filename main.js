@@ -1,6 +1,7 @@
 
 var cont = new myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction,
         touchStart, touchStart, touchStart);
+var updateTime = Date.now();
 //init pubnub
 var pubnub = PUBNUB.init({
    subscribe_key: 'sub-c-9609aa90-f010-11e6-9032-0619f8945a4f',
@@ -70,3 +71,18 @@ function touchStart(){
         message: {"log": sendAnal},
     });
 }//touchStart
+
+function touchMove(){
+    var timeNow = Date.now();
+    var timeDiff = timeNow-lastUpdate;
+
+    if(timeDiff > 100){
+        lastUpdate = timeNow;
+        var sendAnal = getAnDirection();
+
+        pubnub.publish({
+            channel: "con",
+            message: {"log": sendAnal},
+        });
+    }//if
+}//touchMove
