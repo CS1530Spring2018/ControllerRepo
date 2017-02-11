@@ -21,38 +21,43 @@ var rigthEndX;
 var rightEndY;
 var rightTouching;
 var rightEvent;
+var rightTap;
+var rightHammer;
+var rightColor = "rgba(255, 0, 0, 1)";
 
 var tap = false;
 var doubleTap = false;
 var swipe = false;
 
 class myjoystick{
-  constructor(){
-  setupCanvasL();
-  setupCanvasR();
+  constructor(tapFunction, doubleTapFunction, swipeFunction){
+      setupCanvasL();
+      setupCanvasR();
+      rightHammer = new Hammer(canvasR);
 
-  setInterval(drawL, 1000/35); //calls draw function 1000/35 times per second continuously
-  setInterval(drawR, 1000/35);
-  if(touchable) {     //checks if the screen is a touch screem
-      // Joystick canvas
-      canvasL.addEventListener( 'touchstart', onTouchStartLeft, false );
-      canvasL.addEventListener( 'touchmove', onTouchMoveLeft, false );
-      canvasL.addEventListener( 'touchend', onTouchEndLeft, false );
+      setInterval(drawL, 1000/35); //calls draw function 1000/35 times per second continuously
+      setInterval(drawR, 1000/35);
+      if(touchable) {     //checks if the screen is a touch screem
+          // Joystick canvas
+          canvasL.addEventListener( 'touchstart', onTouchStartLeft, false );
+          canvasL.addEventListener( 'touchmove', onTouchMoveLeft, false );
+          canvasL.addEventListener( 'touchend', onTouchEndLeft, false );
 
-      canvasR.addEventListener( 'touchstart', onTouchStartRight, false );
-      canvasR.addEventListener( 'touchend', onTouchEndRight, false);
+          rightHammer.on('tap', tapFunction);
+          rightHammer.on('doubletap', doubleTapFunction);
 
-      window.onorientationchange = resetCanvas;
-      window.onresize = resetCanvas;
-  } else {        //if it's a mouse. Used for debug
-    canvasL.addEventListener( 'mousemove', onMouseMove, false );
-    canvasL.addEventListener( 'mousedown', onMouseDown, false );
-    canvasL.addEventListener( 'mouseup', onMouseUp, false );
-    window.onresize = resetCanvas;
-  }// if...else
-}
+          rightHammer.get('swipe').set({direction: Hammer.DIRECTION_ALL});
+          rightHammer.on('swipe', swipeFunction);
 
-
+          window.onorientationchange = resetCanvas;
+          window.onresize = resetCanvas;
+      } else {        //if it's a mouse. Used for debug
+        canvasL.addEventListener( 'mousemove', onMouseMove, false );
+        canvasL.addEventListener( 'mousedown', onMouseDown, false );
+        canvasL.addEventListener( 'mouseup', onMouseUp, false );
+        window.onresize = resetCanvas;
+      }// if...else
+    }
 }
 
 function setupCanvasL(){
@@ -85,7 +90,6 @@ function setupCanvasR(){
   r.lineWidth = 2;
 }//setupCanvas by writing all the html on page load     //Canvas for buttons
 
-
 function resetCanvas (e) {
   // resize the canvas - but remember - this clears the canvas too.
   canvasL.width = window.innerWidth;
@@ -99,7 +103,11 @@ function init(){
 }//init
 
 function drawR(){
-  r.clearRect(0, 0, canvasR.width, canvasR.height*2);
+    r.beginPath();
+    r.strokeStyle = rightColor;//red base
+    r.lineWidth = "10";
+    r.arc(300, 300, 65, 0, Math.PI*2, true);
+    r.stroke();
 }       //This will be the button side
 
 function drawL(){
@@ -243,26 +251,7 @@ function onMouseDown(e){
 
 // Returns json object with 'single' and 'double' only one will be true
 function getTapType(){
-    var single = false;
-    var double = false;
-    var tapping;
-    if(!rightTouching){
-        rightTouching = setTimeout (function(single, double){
-            rightTouching = null;
-            single = true;
-            double = false;
-        },
-        300);
-    } else {
-        clearTimeout(rightTouching);
-        rightTouching = null;
-        single = false;
-        double = true;
-    }//if...else
 
-    tapping = {'single':single, 'double':double};
-    rightEvent.preventDefault();
-    return tapping;
 }//getTap
 
 // Returns an object with xdir and ydir that has the direction between
