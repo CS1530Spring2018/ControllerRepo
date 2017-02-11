@@ -150,7 +150,7 @@ function drawJoystick(){
 }//drawJoystick
 
 function onTouchStartRight(e){
-    rightTouch = e.touches[0];
+    rightTouch = e.targetTouches[0];
     rightStartX = rightTouch.clientX;
     rightStartY = rightTouch.clientY;
     rightEndX = rightStartX;
@@ -164,7 +164,7 @@ function onTouchEndRight(e){
 }//onTouchEndRight
 
 function onTouchStartLeft(e) {
-  joystickTouch = e.touches[0];
+  joystickTouch = e.targetTouches[0];
   baseX = joystickTouch.clientX;
   baseY = joystickTouch.clientY;
   circX = baseX;
@@ -245,12 +245,24 @@ function onMouseDown(e){
 function getTapType(){
     var single = false;
     var double = false;
+    var tapping;
+    if(!rightTouching){
+        rightTouching = setTimeout (function(single, double){
+            rightTouching = null;
+            single = true;
+            double = false;
+        },
+        300);
+    } else {
+        clearTimeout(rightTouching);
+        rightTouching = null;
+        single = false;
+        double = true;
+    }//if...else
 
-    // if(){
-    //
-    // }
-
-    var taps = {'single':single, 'double':double };
+    tapping = {'single':single, 'double':double};
+    rightEvent.preventDefault();
+    return tapping;
 }//getTap
 
 // Returns an object with xdir and ydir that has the direction between
