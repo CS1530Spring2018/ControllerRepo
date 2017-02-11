@@ -94,7 +94,7 @@ function drawJoystick(){
     var digx = digDirection.xdig;
     var digy = digDirection.ydig;
 
-    var anlDirection = getDirection();
+    var anlDirection = getAnDirection();
     var anlx = anlDirection.xdir;
     var anly = anlDirection.ydir;
 
@@ -204,7 +204,7 @@ function onMouseDown(e){
 
 // Returns an object with xdir and ydir that has the direction between
 // -1 and 1 in each position
-function getDirection(){
+function getAnDirection(){
       var x = baseX-circX;
       var y = baseY-circY;
 
@@ -241,7 +241,7 @@ function getDigDirection(){
   var xdig = 0;
   var ydig = 0;
 
-  if(xdir<0.5 && xdir>(-0.5)){
+  if((xdir<0.5 && xdir>(-0.5)) || isNaN(xdir)){
     xdig = 0;
   } else if(xdir<=0.5){
     xdig = -1;
