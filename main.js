@@ -1,0 +1,2 @@
+
+var cont = new myjoystick();

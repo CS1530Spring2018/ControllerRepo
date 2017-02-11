@@ -1,3 +1,5 @@
+
+
 var canvasL, canvasR;
 var c, r;
 var containerL;
@@ -24,11 +26,34 @@ var tap = false;
 var doubleTap = false;
 var swipe = false;
 
-setupCanvasL();
-setupCanvasR();
+class myjoystick{
+  constructor(){
+  setupCanvasL();
+  setupCanvasR();
 
-setInterval(drawL, 1000/35); //calls draw function 1000/35 times per second continuously
-setInterval(drawR, 1000/35);
+  setInterval(drawL, 1000/35); //calls draw function 1000/35 times per second continuously
+  setInterval(drawR, 1000/35);
+  if(touchable) {     //checks if the screen is a touch screem
+      // Joystick canvas
+      canvasL.addEventListener( 'touchstart', onTouchStartLeft, false );
+      canvasL.addEventListener( 'touchmove', onTouchMoveLeft, false );
+      canvasL.addEventListener( 'touchend', onTouchEndLeft, false );
+
+      canvasR.addEventListener( 'touchstart', onTouchStartRight, false );
+      canvasR.addEventListener( 'touchend', onTouchEndRight, false);
+
+      window.onorientationchange = resetCanvas;
+      window.onresize = resetCanvas;
+  } else {        //if it's a mouse. Used for debug
+    canvasL.addEventListener( 'mousemove', onMouseMove, false );
+    canvasL.addEventListener( 'mousedown', onMouseDown, false );
+    canvasL.addEventListener( 'mouseup', onMouseUp, false );
+    window.onresize = resetCanvas;
+  }// if...else
+}
+
+
+}
 
 function setupCanvasL(){
   canvasL = document.createElement( 'canvas' );
@@ -60,23 +85,6 @@ function setupCanvasR(){
   r.lineWidth = 2;
 }//setupCanvas by writing all the html on page load     //Canvas for buttons
 
-if(touchable) {     //checks if the screen is a touch screem
-    // Joystick canvas
-    canvasL.addEventListener( 'touchstart', onTouchStartLeft, false );
-    canvasL.addEventListener( 'touchmove', onTouchMoveLeft, false );
-    canvasL.addEventListener( 'touchend', onTouchEndLeft, false );
-
-    canvasR.addEventListener( 'touchstart', onTouchStartRight, false );
-    canvasR.addEventListener( 'touchend', onTouchEndRight, false);
-
-    window.onorientationchange = resetCanvas;
-    window.onresize = resetCanvas;
-} else {        //if it's a mouse. Used for debug
-  canvasL.addEventListener( 'mousemove', onMouseMove, false );
-  canvasL.addEventListener( 'mousedown', onMouseDown, false );
-  canvasL.addEventListener( 'mouseup', onMouseUp, false );
-  window.onresize = resetCanvas;
-}// if...else
 
 function resetCanvas (e) {
   // resize the canvas - but remember - this clears the canvas too.
