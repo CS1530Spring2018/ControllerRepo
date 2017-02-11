@@ -31,6 +31,8 @@ var swipe = false;
 
 function myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction,
                     startTouch, moveTouch, endTouch){
+                        this.getAnDirection = getAnDirection;
+                        this.getDigDirection = getDigDirection;
       setupCanvasL();
       setupCanvasR();
       rightHammer = new Hammer(canvasR);
@@ -97,9 +99,6 @@ function myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFuncti
         canvasL.addEventListener( 'mouseup', onMouseUp, false );
         window.onresize = resetCanvas;
       }// if...else
-
-      this.getAnDirection = getAnDirection;
-      this.getDigDirection = getDigDirection;
 }//myjoystick
 
 function setupCanvasL(){

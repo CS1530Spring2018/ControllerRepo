@@ -63,7 +63,7 @@ function swipeUFunction(){
 
 function touchStart(){
 
-    var sendAnal = cont.getAnDirection();
+    var sendAnal = getAnDirection();
 
     pubnub.publish({
         channel: "con",
