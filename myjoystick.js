@@ -178,7 +178,7 @@ function onTouchMoveLeft(e) {
   touchX = touch.clientX;
   touchY = touch.clientY;
   var dist = Math.sqrt(Math.pow(baseY-touchY, 2) + Math.pow(baseX-touchX, 2));
-  if (touching) {
+  if (leftTouching) {
     if (dist < rad || dist < -rad) { // in the circle
       circY=touchY;
       circX=touchX;
@@ -200,7 +200,7 @@ function onTouchMoveLeft(e) {
 }//onTouchMove
 
 function onTouchEndLeft(e) {
-  touching = false;
+  leftTouching = false;
 }//onTouchEnd
 
 function onMouseMove(event) {
