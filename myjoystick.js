@@ -6,7 +6,7 @@ var mouseDown = false;
 var circX, circY; //where the circle will be drawn for the analog stick
 var baseX, baseY; //where the base of the analog stick will be drawn
 var touchable = 'createTouch' in document;
-var touch;
+var joystickTouch;
 var touching = false;
 var halfX = (window.innerWidth/2);
 var rad = 40;
@@ -84,7 +84,7 @@ function drawL(){
   } else{
 
     if(mouseDown && baseX<halfX){
-          drawJoystick();
+         drawJoystick();
     }//if
   }//if else
 }//draw
@@ -110,21 +110,22 @@ function drawJoystick(){
     c.arc(circX*2, circY*2, 65, 0, Math.PI*2, true);
     c.stroke();
 
-    c.font = '50px';
+
+    c.fillStyle = "rgba(255, 255, 0, 1)";// gold on black
     c.fillText('digx: '+digx, 10, 20);
 
-    c.font = '50px';
+    c.fillStyle = "rgba(255, 255, 0, 1)";// gold on black
     c.fillText('digy: '+digy, 10, 40);
 
-    c.font = '30px';
+    c.fillStyle = "rgba(255, 255, 0, 1)";// gold on black
     c.fillText('anlx: '+anlx, 10, 60);
 
-    c.font = '30px';
+    c.fillStyle = "rgba(255, 255, 0, 1)";// gold on black
     c.fillText('anly: '+anly, 10, 80);
 }//drawJoystick
 
 function onTouchStart(e) {
-  touch = e.touches[0];
+  joystickTouch = e.touches[0];
   baseX = touch.clientX;
   baseY = touch.clientY;
   circX = baseX;
@@ -204,17 +205,25 @@ function onMouseDown(e){
 // Returns an object with xdir and ydir that has the direction between
 // -1 and 1 in each position
 function getDirection(){
-  var x = baseX-circX;
-  var y = baseY-circY;
+      var x = baseX-circX;
+      var y = baseY-circY;
 
-  var sin = (y/Math.sqrt((x*x)+(y*y)));
-  var cos = -1*(x/Math.sqrt((x*x)+(y*y)));
+      var sin = (y/Math.sqrt((x*x)+(y*y)));
+      var cos = -1*(x/Math.sqrt((x*x)+(y*y)));
 
-  var xdir = (Math.abs(x)/rad)*cos;
-  var ydir = (Math.abs(y)/rad)*sin;
+      var xdir = (Math.abs(x)/rad)*cos;
+      var ydir = (Math.abs(y)/rad)*sin;
 
-  var analogDir = {'xdir': xdir, 'ydir': ydir};
-  return analogDir;
+      if(isNaN(xdir)){
+          xdir = 0;
+      }//if checking if NaN
+
+      if(isNaN(ydir)){
+          ydir = 0;
+      }//if checking if NaN
+
+      var analogDir = {'xdir': xdir, 'ydir': ydir};
+      return analogDir;
 }//getDirection
 
 // Returns an object with xdir and ydir that has either -1, 1, or 0 for
