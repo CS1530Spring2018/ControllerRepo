@@ -7,9 +7,22 @@ var circX, circY; //where the circle will be drawn for the analog stick
 var baseX, baseY; //where the base of the analog stick will be drawn
 var touchable = 'createTouch' in document;
 var joystickTouch;
-var touching = false;
+var leftTouching = false;
 var halfX = (window.innerWidth/2);
 var rad = 40;
+
+//Right canvas stuff
+var rightTouch;
+var rightStartX;
+var rightStartY;
+var rigthEndX;
+var rightEndY;
+var rightTouching;
+var rightEvent;
+
+var tap = false;
+var doubleTap = false;
+var swipe = false;
 
 setupCanvasL();
 setupCanvasR();
@@ -53,6 +66,8 @@ if(touchable) {     //checks if the screen is a touch screem
     canvasL.addEventListener( 'touchmove', onTouchMoveLeft, false );
     canvasL.addEventListener( 'touchend', onTouchEndLeft, false );
 
+    canvasR.addEventListener( 'touchstart', onTouchStartRight, false );
+    canvasR.addEventListener( 'touchend', onTouchEndRight, false);
 
     window.onorientationchange = resetCanvas;
     window.onresize = resetCanvas;
@@ -81,7 +96,7 @@ function drawR(){
 
 function drawL(){
   c.clearRect(0, 0, canvasL.width, canvasL.height*2);
-  if(touching && touch.clientX<halfX){
+  if(leftTouching && touch.clientX<halfX){
         drawJoystick();
   } else{
 
@@ -126,13 +141,27 @@ function drawJoystick(){
     c.fillText('anly: '+anly, 10, 80);
 }//drawJoystick
 
+function onTouchStartRight(e){
+    rightTouch = e.touches[0];
+    rightStartX = rightTouch.clientX;
+    rightStartY = rightTouch.clientY;
+    rightEndX = rightStartX;
+    rightEndY = rightStartY;
+    rightEvent = e;
+    rightTouching = true;
+}//onTouchStartRight
+
+function onTouchEndRight(e){
+    rightTouching = false;
+}//onTouchEndRight
+
 function onTouchStartLeft(e) {
   joystickTouch = e.touches[0];
-  baseX = touch.clientX;
-  baseY = touch.clientY;
+  baseX = joystickTouch.clientX;
+  baseY = joystickTouch.clientY;
   circX = baseX;
   circY = baseY;
-  touching = true;
+  leftTouching = true;
 }//onTouchStart
 
 function onTouchMoveLeft(e) {
@@ -203,6 +232,18 @@ function onMouseDown(e){
   baseY = mouseY;
   mouseDown = true;
 }//onMouseDown
+
+// Returns json object with 'single' and 'double' only one will be true
+function getTapType(){
+    var single = false;
+    var double = false;
+
+    // if(){
+    //
+    // }
+
+    var taps = {'single':single, 'double':double };
+}//getTap
 
 // Returns an object with xdir and ydir that has the direction between
 // -1 and 1 in each position
