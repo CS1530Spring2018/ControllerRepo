@@ -12,6 +12,7 @@ var joystickTouch;
 var leftTouching = false;
 var halfX = (window.innerWidth/2);
 var rad = 40;
+var updateTime = Date.now();
 
 //Right canvas stuff
 var rightTouch;
@@ -52,6 +53,7 @@ function myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFuncti
           }, false );
           canvasL.addEventListener( 'touchmove', function(e){
               e.preventDefault();
+
               touch = e.touches[0];
               touchX = touch.clientX;
               touchY = touch.clientY;
@@ -75,7 +77,8 @@ function myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFuncti
                   }
                 }
               }
-              moveTouch();
+
+                  moveTouch();
           }, false );
           canvasL.addEventListener( 'touchend', function(e){
               leftTouching = false;
@@ -148,7 +151,7 @@ function drawR(){
     r.strokeStyle = rightColor;//red base
     r.lineWidth = "10";
     r.arc(300, 300, 65, 0, Math.PI*2, true);
-    r.stroke();
+    //r.stroke();
 }       //This will be the button side
 
 function drawL(){

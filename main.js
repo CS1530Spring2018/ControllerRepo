@@ -1,88 +1,121 @@
 
-var cont = new myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction,
-        touchStart, touchStart, touchStart);
-var updateTime = Date.now();
 //init pubnub
-var pubnub = PUBNUB.init({
-   subscribe_key: 'sub-c-9609aa90-f010-11e6-9032-0619f8945a4f',
-  publish_key: 'pub-c-62822c7d-339b-4abc-9e87-fb6671883787'
- });
- //subscribe to pubnub
- pubnub.subscribe({
-     channel: "con", // The proper channel.
-     message: function(){} // we don't really care about any of the messages.
- });
+var calls = 0;
+
+var drone = new ScaleDrone('yG0sVcaLcpbHQKJK');
+
+drone.on('open', function (error) {
+  if (error) {
+    return console.error(error);
+  }
+  var room = drone.subscribe('my_game');
+  room.on('open', function (error) {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('Connected to room');
+    }
+  });
+});
 
 function tapFunction(){
     //alert("Doing something for a tap");
-    pubnub.publish({
-           channel: "con", // The proper channel.
-           message: { "log" : "tapFunction"
-           }
+
+    drone.publish({
+    room: "my_game",
+    message: { "log" : "tapFunction"
+    }
+
     });
 }//tapFunction
 
 function doubleTapFunction(){
-  pubnub.publish({
-         channel: "con", // The proper channel.
-         message: { "log" : "doubleTapFunction"
-         }
+
+  drone.publish({
+  room: "my_game",
+  message: { "log" : "doubleTapFunction"
+  }
+
   });
 }//doubleTapFunction
 
 function swipeRFunction(){
-  pubnub.publish({
-         channel: "con", // The proper channel.
-         message: { "log" : "swipeRFunction"
-         }
+  drone.publish({
+  room: "my_game",
+  message: { "log" : "swipeRFunction"
+  }
+
   });
 }//swipeRFunction
 
 function swipeLFunction(){
-  pubnub.publish({
-         channel: "con", // The proper channel.
-         message: { "log" : "swipeLFunction"
-         }
+  drone.publish({
+  room: "my_game",
+  message: { "log" : "swipeLFunction"
+  }
+
   });
 }//swipeLFunction
 
 function swipeDFunction(){
-  pubnub.publish({
-         channel: "con", // The proper channel.
-         message: { "log" : "swipeDFunction"
-         }
+  drone.publish({
+  room: "my_game",
+  message: { "log" : "swipeDFunction"
+  }
+
   });
 }//swipeDFunction
 
 function swipeUFunction(){
-  pubnub.publish({
-         channel: "con", // The proper channel.
-         message: { "log" : "swipeUFunction"
-         }
+  drone.publish({
+  room: "my_game",
+  message: { "log" : "swipeUFunction"
+  }
+
   });
 }//swipeUFunction
-
+var timer = 0;
 function touchStart(){
-
-    var sendAnal = getAnDirection();
-
-    pubnub.publish({
-        channel: "con",
-        message: {"log": sendAnal},
+  if (timer == 0){
+    console.log("here");
+    var sendDig = getDigDirection();
+    drone.publish({
+    room: "my_game",
+    message: sendDig
     });
+    timer = 5;
+  } else {
+    timer --;
+  }
+
+
+
 }//touchStart
-
+var tier2=0;
 function touchMove(){
-    var timeNow = Date.now();
-    var timeDiff = timeNow-lastUpdate;
+if (tier2 == 0){
+        var sendAnal = getDigDirection();
+        drone.publish({
+        room: "my_game",
+        message: sendAnal
 
-    if(timeDiff > 100){
-        lastUpdate = timeNow;
-        var sendAnal = getAnDirection();
+      });
+      tier2 = 5;
+    } else {
+        tier2 --;
+      }
 
-        pubnub.publish({
-            channel: "con",
-            message: {"log": sendAnal},
-        });
-    }//if
 }//touchMove
+setInterval(doStuff, 100);
+
+function doStuff(){
+    var sendAnal = {'xdig': 0, 'ydig': 0};
+    drone.publish({
+        room: "my_game",
+          message: sendAnal
+
+          });
+}//doStuff
+
+var cont = new myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction,
+        touchStart, touchMove, touchStart);
