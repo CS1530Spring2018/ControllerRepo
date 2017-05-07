@@ -1,6 +1,4 @@
 
-//init pubnub
-var calls = 0;
 
 var drone = new ScaleDrone('yG0sVcaLcpbHQKJK');
 
@@ -106,7 +104,7 @@ if (tier2 == 0){
       }
 
 }//touchMove
-setInterval(doStuff, 100);
+//setInterval(doStuff, 100);
 
 function doStuff(){
     var sendAnal = {'xdig': 0, 'ydig': 0};
@@ -117,5 +115,4 @@ function doStuff(){
           });
 }//doStuff
 
-var cont = new myjoystick(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction,
-        touchStart, touchMove, touchStart);
+var controller = pickControllerOptions(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction, touchStart, touchMove, touchStart);
