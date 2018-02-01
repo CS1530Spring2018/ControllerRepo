@@ -115,4 +115,4 @@ function doStuff(){
           });
 }//doStuff
 
-var controller = pickControllerOptions(tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction, touchStart, touchMove, touchStart);
+var controller = myjoystick (tapFunction, doubleTapFunction, swipeRFunction, swipeLFunction, swipeUFunction, swipeDFunction, touchStart, touchMove, touchStart);

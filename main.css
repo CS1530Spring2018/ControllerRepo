@@ -5,7 +5,6 @@ canvas{
 }
 
 body{
-    background-image: url("641448.jpg");
     position: relative;
     display: flex;
     padding: 0;
@@ -16,14 +15,16 @@ body{
     width:auto;
     text-align:center;
     left: 0;
-    border-left: 1px solid blue;
-    border-right: 1px solid blue;
+    background-color:  rgb(235, 199, 0);
+    border-left: 1px solid rgb(235, 199, 0);
+    border-right: 1px solid rgb(235, 199, 0);
 }
 
 .containerR{
   padding: 0;
   text-align:center;
   right: 0;
-  border-right: 1px solid blue;
-  border-left: 1px solid blue;
+  background-color: black;
+  border-right: 1px solid rgb(0, 0, 0);
+  border-left: 1px solid rgb(0, 0, 0);
 }
